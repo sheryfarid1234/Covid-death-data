@@ -1,0 +1,109 @@
+it -- select data that we are going o be using
+
+select location,date,total_cases,new_cases,total_deaths,
+population from covid_deaths
+order by 1,2
+
+-- looking at total_cases and total_death
+-- show likelihood of dying if u contract covid in your country
+
+select location,date,total_cases,total_deaths,(total_deaths/total_cases)*100 as avg_deaths
+from covid_deaths
+where  location like '%Pakis%' AND total_deaths>00
+order by 3,4
+
+
+-- looking at total cases vs population
+-- show what percentage of population got covid
+select location,date,total_cases,population,(total_cases/population)*100 as cases_percentage
+from covid_deaths
+where  location like '%Pakis%' and total_cases>=1
+order by 3,4
+
+
+
+--looking at countries wih highest infection rate compared to population
+select location,population,max(total_cases) as highinfectioncount,max(total_deaths)as highdeathcount,
+max((total_cases/population))*100 as perpopulationinfected,
+max((total_deaths/population))*100 as perpopulationdeath
+from covid_deaths
+-- where  location like '%Pakis%' 
+group by population , location
+order by perpopulationinfected desc
+
+
+-- showing countries with highest death count per population
+select location,max(cast(total_deaths as int))as highdeathcount
+from covid_deaths
+where continent  is not null 
+group by   location
+order by highdeathcount desc
+
+
+-- lets break things down by continent
+select continent,max(total_deaths),max(cast(total_deaths as int))as highdeathcount
+from covid_deaths
+where continent  is not null 
+group by   continent
+order by highdeathcount desc            
+
+
+
+-- select data that we are going o be using
+
+select location,date,total_cases,new_cases,total_deaths,
+population from covid_deaths
+order by 1,2
+
+-- looking at total_cases and total_death
+-- show likelihood of dying if u contract covid in your country
+
+select location,date,total_cases,total_deaths,(total_deaths/total_cases)*100 as avg_deaths
+from covid_deaths
+where  location like '%Pakis%' AND total_deaths>00
+order by 3,4
+
+
+-- looking at total cases vs population
+-- show what percentage of population got covid
+select location,date,total_cases,population,(total_cases/population)*100 as cases_percentage
+from covid_deaths
+where  location like '%Pakis%' and total_cases>=1
+order by 3,4
+
+
+
+--looking at countries wih highest infection rate compared to population
+select location,population,max(total_cases) as highinfectioncount,max(total_deaths)as highdeathcount,
+max((total_cases/population))*100 as perpopulationinfected,
+max((total_deaths/population))*100 as perpopulationdeath
+from covid_deaths
+-- where  location like '%Pakis%' 
+group by population , location
+order by perpopulationinfected desc
+
+
+-- showing countries with highest death count per population
+select location,max(cast(total_deaths as int))as highdeathcount
+from covid_deaths
+where continent  is not null 
+group by   location
+order by highdeathcount desc
+
+
+-- let's break things down by continent
+
+-- showing continents with the highest death per population
+select continent,max(total_deaths),max(cast(total_deaths as int))as highdeathcount
+from covid_deaths
+where continent is  not  null 
+group by   continent
+order by highdeathcount desc
+
+-- GLOBAL NUMBERS
+select continent,  sum(new_cases) ,sum(new_deaths)  ,sum(new_deaths)/sum(new_cases)*100 as deathper
+from covid_deaths
+where continent is  not  null 
+group by continent
+order by deathper desc
+
